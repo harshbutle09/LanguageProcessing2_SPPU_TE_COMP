@@ -36,23 +36,13 @@ vector<int> jobSchedule(vector<Job*> allJobs){
         schedule.push_back(p);
     }
     sort(schedule.begin() , schedule.end() , greater<>());
-
-    // vector<bool> timeline(maxi + 1 , 0); // for 1 Based indexing
+    
     vector<int>parent(maxi + 1);
     for(int i = 0 ; i < parent.size() ; i ++){
         parent[i] = i;
     }
     for(int i = 0 ; i < n ; i ++){
         int currentDeadline = schedule[i].second;
-        // for(int j = currentDeadline ; j > 0 ; j --){
-        //     if(timeline[j] == 0){
-        //         timeline[j] = 1;
-        //         totalProfit += schedule[i].first;
-        //         totalJobs += 1;
-        //         break;
-        //     }
-        // }
-
         int slot = find(currentDeadline , parent);
         if(slot){
             totalJobs ++;
