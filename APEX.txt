@@ -1,0 +1,559 @@
+Fibonacci
+
+public class Fibonacci {
+    
+    public static List<Integer> fibo(Integer n){
+		List<Integer>fibSeries = new List<Integer>();
+        
+        if(n < 0){
+			return fibSeries;
+        }
+        Integer a = 0;
+        Integer b = 1;
+        fibSeries.add(a);
+        
+        if(n > 1){
+			fibSeries.add(b);
+        }
+        
+        for(Integer i = 2 ; i < n ; i ++){
+			Integer nextNum = a + b;
+            a = b;
+            b = nextNum;
+            fibSeries.add(nextNum);
+        }
+       return fibSeries; 
+    }
+    
+    public void printFibo(Integer n){
+        List<Integer> requiredSeries = fibo(n);
+	System.debug('Elements present in the list are: ' + requiredSeries);
+        System.debug(n + 'th element in the list is: ' + requiredSeries[n - 1]);
+    }
+    
+}
+
+
+
+
+
+Fibonacci f = new Fibonacci();
+f.printFibo(10);
+
+
+
+-----------------------------------------------------------
+
+Calculator
+
+
+public class Calculator {
+	// Addition
+    public static Double add(Double a, Double b) {
+        return a + b;
+    }
+
+    // Subtraction
+    public static Double subtract(Double a, Double b) {
+        return a - b;
+    }
+
+    // Multiplication
+    public static Double multiply(Double a, Double b) {
+        return a * b;
+    }
+
+    // Division
+    public static Double divide(Double a, Double b) {
+        if (b == 0) {
+            //throw new ArithmeticException('Division by zero is not allowed');
+        System.debug('Cannot divide by Zero');
+            return -1;
+        }
+        return a / b;
+    }
+
+    // Power (a raised to the power b)
+    public static Double power(Double a, Double b) {
+        return Math.pow(a, b);
+    }
+
+    // Square root
+    public static Double squareRoot(Double a) {
+        if (a < 0) {
+            //throw new ArithmeticException('Square root of negative number is not allowed');
+        System.debug('Cannot find square root of -ve numbers');
+            return -1;
+        }
+        return Math.sqrt(a);
+    }
+}
+
+
+Double ans = Calculator.add(12 , 14);
+System.debug(ans);
+ans = Calculator.subtract(12, 14);
+System.debug(ans);
+ans = Calculator.multiply(10, 10);
+System.debug(ans);
+ans = Calculator.divide(4, 0);
+System.debug(ans);
+ans = Calculator.power(2,4);
+System.debug(ans);
+ans = Calculator.squareRoot(-4);
+System.debug(ans);
+ans = Calculator.squareRoot(4);
+System.debug(ans);
+
+
+----------------------------------------------------------
+
+Student Marksheet
+
+public class StudentMarksheet {
+    public static void createMarksheet(String StudentName , Map<String , Integer> SubjectScore){
+        Integer totalMarks = 0;
+        Integer passingMarks = 35;
+        Boolean isPass = True;
+        
+        System.debug('--- Marksheet for student: ' + StudentName +' ---');
+        for(String subject : SubjectScore.keyset()){
+            Integer marks = SubjectScore.get(subject);
+            System.debug(subject + ':' + marks);
+            totalMarks += marks;
+            
+            if(marks < passingMarks){
+				isPass = False;
+            }
+        }
+        Decimal average = totalMarks / SubjectScore.size();
+        System.debug('Total Marks : ' + totalMarks);
+        System.debug('Average : ' + average);
+        System.debug('Result : ' + (isPass ? 'Pass' : 'Fail'));
+        
+    }
+}
+
+
+
+Map<String , Integer>score = new Map<String , Integer>{
+	'Physics' => 90,
+     'Chemistry' => 75,
+        'Maths' => 39
+};
+StudentMarksheet.createMarksheet('Harsh', score);
+
+
+----------------------------------------------------
+
+
+Greatest among 3
+
+
+public class GreatestAmongThree {
+    public static void solve(Decimal a , Decimal b , Decimal c){
+        if(a > b && a > c){
+			System.debug(a + ' is the Greatest number amongst all');
+            return;
+        }
+        if(b > a && b > c){
+			System.debug(b + ' is the Greatest number amongst all');
+            return;
+        }
+        if(c > b && a < c){
+			System.debug(c + ' is the Greatest number amongst all');
+            return;
+        }
+        
+        if(a == b && a != c){
+            if(a > c){
+				System.debug(a + 'is the Greatest number amongst all');
+            }else{
+                System.debug(c + ' is the Greatest number amongst all');
+            }
+        }else if(b == c && b != a){
+            if(b > a){
+                System.debug(c +' is the Greatest number amongst all');
+            }else{
+                System.debug(a + ' is the Greatest number amongst all');
+            }
+        }else if(a == c && a != b){
+            if(a > b){
+				System.debug(a +  ' is the Greatest number amongst all');
+            }else{
+			System.debug(b +  ' is the Greatest number amongst all');
+            }
+        }else{
+            System.debug('All 3 numbers are same : ' + a); 
+        }
+    }
+}
+
+
+-------------------------------------------------------
+
+Electricity Bill
+
+public class Elec {
+    public class Appliance {
+        public Integer powerKw;
+        public Integer hours;
+
+        public Appliance(Integer pwr, Integer t) {
+            this.powerKw = pwr;
+            this.hours = t;
+        }
+
+        Integer money() {
+            return powerKw * hours;
+        }
+    }
+
+    public static void calculateBill(String consumerName, Integer rate, Map<String, Appliance> appliances) {
+        Integer totalBill = 0;
+        Integer totalConsumption = 0;
+
+        System.debug('Electricity Bill for: ' + consumerName);
+        System.debug('--------------------------------------');
+        System.debug('Price per Unit : ₹' + rate);
+        System.debug('-----------');
+
+        for (String applianceName : appliances.keySet()) {
+            Appliance a = appliances.get(applianceName);
+            Integer energy = a.money();
+            totalConsumption += energy;
+            System.debug(applianceName + ' consumed ' + energy + ' kWh for ' + a.hours + ' hours');
+            totalBill += energy * rate;
+        }
+
+        System.debug('Total Units consumed : ' + totalConsumption + ' kWh');
+        System.debug('Bill (to be paid) : ₹' + totalBill);
+    }
+}
+
+
+
+Map<String , Elec.Appliance>appliances = new Map<String , Elec.Appliance>{
+'TV' => new Elec.Appliance(5 , 8),
+'AC' => new Elec.Appliance(7 , 10),
+'Fridge' => new Elec.Appliance(8 , 9)
+};
+    
+Elec.calculateBill('Harsh',10, appliances);
+
+
+-----------------------------------------------------------
+
+Interest
+
+
+public class InterestCalculator {
+// Method to calculate Simple Interest
+    public static Double calculateSimpleInterest(Double principal, Double rate, Double t) {
+        // SI = (P × R × T) / 100
+        return (principal * rate * t) / 100;
+    }
+
+    // Method to calculate Compound Interest
+    public static Double calculateCompoundInterest(Double principal, Double rate, Double t) {
+        // CI = P × (1 + R/100)^T - P
+        Double amount = principal * Math.pow((1 + rate / 100), t);
+        return amount - principal;
+    }
+
+    // Main method to test the interest calculations
+    public static void testInterest() {
+        Double principal = 10000; // in ₹
+        Double rate = 5.5;        // annual rate %
+        Double t = 3;          // in years
+
+        Double si = calculateSimpleInterest(principal, rate, t);
+        Double ci = calculateCompoundInterest(principal, rate, t);
+
+        System.debug('Principal: ₹' + principal);
+        System.debug('Rate: ' + rate + '%');
+        System.debug('Time: ' + t + ' years');
+        System.debug('Simple Interest: ₹' + si);
+        System.debug('Compound Interest: ₹' + ci);
+    }
+}
+
+
+--------------------------------------------------------
+
+
+prime checker
+
+
+public class PrimeChecker {
+
+    // Method to check if a number is prime
+    public static void isPrime(Integer n) {
+        if (n <= 1) {
+            System.debug(n + ' is not a prime number.');
+            return;
+        }
+
+        for (Integer i = 2; i <= Math.sqrt(n); i++) {
+            if (Math.mod(n , i) == 0) {
+                System.debug(n + ' is not a prime number.');
+                return;
+            }
+        }
+
+        System.debug(n + ' is a prime number.');
+    }
+}
+
+
+
+-----------------------------------------------------
+Area Calculation
+
+public class GeometryAreaCalculator {
+
+    // Method to calculate area of Circle
+    public static Double areaOfCircle(Double radius) {
+        return Math.PI * radius * radius;
+    }
+
+    // Method to calculate area of Rectangle
+    public static Double areaOfRectangle(Double length, Double width) {
+        return length * width;
+    }
+
+    // Method to calculate area of Triangle
+    public static Double areaOfTriangle(Double base, Double height) {
+        return 0.5 * base * height;
+    }
+
+    // Test method to show output
+    public static void calculateAllAreas() {
+        Double radius = 5;
+        Double length = 10;
+        Double width = 4;
+        Double base = 8;
+        Double height = 6;
+
+        System.debug('Area of Circle (radius = ' + radius + '): ' + areaOfCircle(radius));
+        System.debug('Area of Rectangle (length = ' + length + ', width = ' + width + '): ' + areaOfRectangle(length, width));
+        System.debug('Area of Triangle (base = ' + base + ', height = ' + height + '): ' + areaOfTriangle(base, height));
+    }
+}
+
+
+---------------------------------------------------------------------------------------------
+Graph BFS
+
+public class GraphBFS {
+
+    // Method to perform BFS traversal
+    public static void bfs(Map<String, List<String>> graph, String startNode) {
+        Set<String> visited = new Set<String>();
+        List<String> queue = new List<String>();
+
+        queue.add(startNode);
+        visited.add(startNode);
+
+        System.debug('BFS Traversal starting from: ' + startNode);
+
+        while (!queue.isEmpty()) {
+            String current = queue.remove(0);
+            System.debug('Visited: ' + current);
+
+            if (graph.containsKey(current)) {
+                for (String neighbor : graph.get(current)) {
+                    if (!visited.contains(neighbor)) {
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+        }
+    }
+
+    // Test method to build a sample graph and run BFS
+    public static void testBFS() {
+        Map<String, List<String>> graph = new Map<String, List<String>>();
+        
+        graph.put('A', new List<String>{'B', 'C'});
+        graph.put('B', new List<String>{'D', 'E'});
+        graph.put('C', new List<String>{'F'});
+        graph.put('D', new List<String>());
+        graph.put('E', new List<String>());
+        graph.put('F', new List<String>());
+
+        bfs(graph, 'A');
+    }
+}
+
+
+----------------------------------------------------------------------
+Array Addition
+
+public class ArrayAddition {
+
+    public static List<Integer> addArrays(List<Integer> arr1, List<Integer> arr2) {
+        List<Integer> result = new List<Integer>();
+
+        // Check if arrays are of equal length
+        if (arr1.size() != arr2.size()) {
+            System.debug('Arrays are not of the same length!');
+            return result;
+        }
+
+        for (Integer i = 0; i < arr1.size(); i++) {
+            result.add(arr1[i] + arr2[i]);
+        }
+
+        return result;
+    }
+
+    // Test method
+    public static void testAddition() {
+        List<Integer> array1 = new List<Integer>{1, 2, 3, 4, 5};
+        List<Integer> array2 = new List<Integer>{5, 4, 3, 2, 1};
+
+        List<Integer> sumArray = addArrays(array1, array2);
+
+        System.debug('Result of Array Addition: ' + sumArray);
+    }
+}
+
+
+------------------------------------------------------------------
+
+Matrix Addition
+
+public class MatrixAddition {
+
+    // Method to perform matrix addition
+    public static List<List<Integer>> addMatrices(List<List<Integer>> m1, List<List<Integer>> m2) {
+        List<List<Integer>> result = new List<List<Integer>>();
+
+        if (m1.size() != m2.size() || m1[0].size() != m2[0].size()) {
+            System.debug('Matrices are not of the same dimensions!');
+            return result;
+        }
+
+        for (Integer i = 0; i < m1.size(); i++) {
+            List<Integer> rowResult = new List<Integer>();
+            for (Integer j = 0; j < m1[i].size(); j++) {
+                rowResult.add(m1[i][j] + m2[i][j]);
+            }
+            result.add(rowResult);
+        }
+
+        return result;
+    }
+
+    // Test method to run the matrix addition
+    public static void testMatrixAddition() {
+        List<List<Integer>> matrix1 = new List<List<Integer>>{
+            new List<Integer>{1, 2, 3},
+            new List<Integer>{4, 5, 6}
+        };
+
+        List<List<Integer>> matrix2 = new List<List<Integer>>{
+            new List<Integer>{7, 8, 9},
+            new List<Integer>{1, 2, 3}
+        };
+
+        List<List<Integer>> result = addMatrices(matrix1, matrix2);
+
+        System.debug('Matrix Addition Result:');
+        for (List<Integer> row : result) {
+            System.debug(row);
+        }
+    }
+}
+
+---------------------------------------------------------------------
+
+Matrix Multiplication
+
+public class MatrixMultiplication {
+
+    // Method to perform matrix multiplication
+    public static List<List<Integer>> multiplyMatrices(List<List<Integer>> m1, List<List<Integer>> m2) {
+        List<List<Integer>> result = new List<List<Integer>>();
+
+        // Get dimensions
+        Integer rowsM1 = m1.size();
+        Integer colsM1 = m1[0].size();
+        Integer rowsM2 = m2.size();
+        Integer colsM2 = m2[0].size();
+
+        // Matrix multiplication condition: cols of M1 == rows of M2
+        if (colsM1 != rowsM2) {
+            System.debug('Matrix multiplication not possible. Column count of first matrix must equal row count of second matrix.');
+            return result;
+        }
+
+        // Initialize result matrix with 0s
+        for (Integer i = 0; i < rowsM1; i++) {
+            List<Integer> row = new List<Integer>();
+            for (Integer j = 0; j < colsM2; j++) {
+                row.add(0);
+            }
+            result.add(row);
+        }
+
+        // Multiply matrices
+        for (Integer i = 0; i < rowsM1; i++) {
+            for (Integer j = 0; j < colsM2; j++) {
+                Integer sum = 0;
+                for (Integer k = 0; k < colsM1; k++) {
+                    sum += m1[i][k] * m2[k][j];
+                }
+                result[i][j] = sum;
+            }
+        }
+
+        return result;
+    }
+
+    // Test method
+    public static void testMatrixMultiplication() {
+        List<List<Integer>> matrix1 = new List<List<Integer>>{
+            new List<Integer>{1, 2},
+            new List<Integer>{3, 4}
+        };
+
+        List<List<Integer>> matrix2 = new List<List<Integer>>{
+            new List<Integer>{5, 6},
+            new List<Integer>{7, 8}
+        };
+
+        List<List<Integer>> result = multiplyMatrices(matrix1, matrix2);
+
+        System.debug('Matrix Multiplication Result:');
+        for (List<Integer> row : result) {
+            System.debug(row);
+        }
+    }
+}
+
+
+-----------------------------------------------------
+
+Natural Numbers 
+
+public class NaturalNumbers {
+
+    public static void printFirst100NaturalNumbers() {
+        System.debug('First 100 Natural Numbers:');
+        
+        String result = '';
+        
+        for (Integer i = 1; i <= 100; i++) {
+            result += i + ' ';
+        }
+        
+        System.debug(result);
+    }
+}
+
+-------------------------------------------------
+
+
