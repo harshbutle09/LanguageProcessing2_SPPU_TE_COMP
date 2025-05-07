@@ -1,17 +1,8 @@
-// Following problem is to solve the classical example of N-Queens
-
+// Branch and Bound Optimized
 #include<iostream>
 #include<vector>
 #include<string>
 using namespace std;
-
-// bool isSafe(int row , int col , vector<string>& Board , int n , vector<bool>& rightDiagonal , vector<bool>& leftDiagonal){
-//     if(leftDiagonal[col - row + n - 1] == 1 || rightDiagonal[row + col] == 1){
-//         return 0;
-//     }
-//     return 1;
-// }
-
 
 void find(int row , int n , vector<vector<string>>& ans , vector<string>& Board , vector<bool>& column , vector<bool>& rightDiagonal , vector<bool>& leftDiagonal ){
     if(row == n){

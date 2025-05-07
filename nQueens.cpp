@@ -1,4 +1,4 @@
-// Following problem is to solve the classical example of N-Queens
+
 
 #include<iostream>
 #include<vector>
