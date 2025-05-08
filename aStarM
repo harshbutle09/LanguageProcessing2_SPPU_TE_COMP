@@ -1,0 +1,134 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#include <unordered_set>
+using namespace std;
+const int N  = 3;
+struct Board{
+    int g, h;
+    int zr, zc;
+    int puzzle[N][N];
+    bool operator<(const Board &other)const{
+        return (g+h) > (other.g + other.h);
+    }
+};
+int ManhattanDistance(const Board state){
+    int dist = 0;
+    for(int i = 0 ;i < N; i++){
+        for(int j = 0 ; j < N; j++){
+            int value = state.puzzle[i][j];
+            if(value != 0){
+            int targetRow = (value-1)/N;
+            int targetColumn = (value-1)%N;
+            dist += abs(targetRow - i)+abs(targetColumn - j);
+            }
+        }
+    }
+    return dist;
+}
+void printPuzzle(const Board curr){
+    for(int i = 0 ;i < N; i++){
+        for(int j = 0 ; j < N; j++){
+            cout<<curr.puzzle[i][j];
+        }
+        cout<<endl;
+    }
+}
+
+Board initiate(string prompt){
+    Board state;
+    cout<<prompt<<"Enter the value form first tile: ";
+    for(int i = 0 ;i < N; i++){
+        for(int j = 0 ; j < N; j++){
+            int value;
+            cout<<"Enter tile("<<i<<" "<<j<<"): ";
+            cin>>value;
+            state.puzzle[i][j] = value;
+            if(value == 0){
+                state.zr = i;
+                state.zc = j;
+            }
+        }
+    }
+    state.g = 0;
+    state.h = ManhattanDistance(state);
+    return state;
+}
+
+
+
+bool isValid(int row , int col){
+    if(row >= 0 && row < N && col >= 0 && col < N){ return true;}
+    return false;
+}
+bool isEqual(const Board initial, const Board final){
+    for(int i = 0 ;i < N; i++){
+        for(int j = 0 ; j < N; j++){
+            if(initial.puzzle[i][j] != final.puzzle[i][j]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+vector<Board> generateNextStates(const Board curr){
+    vector<Board>States;
+    int moves[4][2] = {{0,-1},{0,1},{-1,0},{1,0}};
+    for(int k = 0 ; k < 4; k++){
+        Board nextState = curr;
+        int nextzr = curr.zr + moves[k][0];
+        int nextzc = curr.zc + moves[k][1];
+        if(isValid(nextzr, nextzc)){
+            swap(nextState.puzzle[curr.zr][curr.zc], nextState.puzzle[nextzr][nextzc]);
+            nextState.zr = nextzr;
+            nextState.zc = nextzc;
+
+            nextState.g = curr.g + 1;
+            nextState.h = ManhattanDistance(nextState);
+            States.push_back(nextState);
+        }
+    }
+    return States;
+}
+
+void AstarAlgo(const Board initial, const Board final){
+    priority_queue<Board> pq;
+    unordered_set<int>visited;
+    pq.push(initial);
+    while(!pq.empty()){
+        Board curr = pq.top();
+        pq.pop();
+        cout<<"Puzzle state"<<endl;
+        printPuzzle(curr);
+        cout << "Number of moves: " << curr.g << endl;
+        cout << "Heuristic cost: " << curr.h << endl;
+        cout << "-------------------\n";
+        if(isEqual(curr , final)){
+            cout << "Number of moves: " << curr.g << endl;
+            cout << "Heuristic cost: " << curr.h << endl;
+            cout << "-------------------\n";
+            break;
+        }
+        vector<Board> nextstates = generateNextStates(curr);
+        for(const Board b: nextstates){
+            long int hash = 0;
+            for(int i = 0 ;i < N; i++){
+                for(int j = 0 ; j < N; j++){
+                    hash = hash*10 + b.puzzle[i][j];
+                }
+            }
+            if(visited.find(hash) == visited.end()){
+                pq.push(b);
+                visited.insert(hash);
+            }
+        }
+    }
+}
+int main() {
+    Board initial = initiate("Initial State");
+    Board goal = initiate("Goal State");
+    AstarAlgo(initial, goal);
+    return 0;
+}
